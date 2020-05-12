@@ -7,6 +7,7 @@ module DeckOfSet
     , handHasASet
     , mateCard
     , hand
+    , newHand
     , troublesomeHand
     ) where
 
@@ -79,7 +80,7 @@ handHasASet :: [Card] -> Maybe (Card, Card, Card)
 handHasASet h =
     let pairs = allPairs h
         mih = mateInHand' h
-        cs = fmap mih pairs
+        cs = dropWhile (== Nothing) $ fmap mih pairs
     in case cs of
          [] -> Nothing
          (c:_) -> c
@@ -106,3 +107,6 @@ hand = [deck !! 0, deck !! 1, deck !! 2
        , deck !! 3, deck !! 4, deck !! 5
        , deck !! 6, deck !! 7, deck !! 8
        , deck !! 9, deck !! 10, deck !! 11]
+
+newHand :: [Card]
+newHand = (Tres,Purple,Solid,Worm) : troublesomeHand
