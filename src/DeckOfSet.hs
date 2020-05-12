@@ -6,6 +6,7 @@ module DeckOfSet
     , mateInHand'
     , handHasASet
     , hand
+    , mateCard
     ) where
 
 import qualified Data.List as L
@@ -45,12 +46,13 @@ mateFeature v1 v2 =
 
 -- Find the mate of two cards
 mateCard :: Card -> Card -> Maybe Card
-mateCard (v1, c1, d1, p1) (v2, c2, d2, p2) = do
-  v3 <- mateFeature v1 v2
-  c3 <- mateFeature c1 c2
-  d3 <- mateFeature d1 d2
-  p3 <- mateFeature p1 p2
-  return (v3, c3, d3, p3)
+mateCard m1@(v1, c1, d1, p1) m2@(v2, c2, d2, p2) =
+  if m1 == m2 then Nothing else do
+      v3 <- mateFeature v1 v2
+      c3 <- mateFeature c1 c2
+      d3 <- mateFeature d1 d2
+      p3 <- mateFeature p1 p2
+      return (v3, c3, d3, p3)
 
 -- Get all pairs in a hand.  A hand of 12 cards has 66 pairs.
 allPairs :: [Card] -> [(Card, Card)]
