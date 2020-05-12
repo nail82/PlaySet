@@ -1,4 +1,12 @@
-module DeckOfSet where
+module DeckOfSet
+    ( Value (Uno, Dos, Tres)
+    , Color (Green, Purple, Red)
+    , Shade (Blank, Hash, Solid)
+    , Shape (Angles, Pill, Worm)
+    , mateInHand'
+    , handHasASet
+    , hand
+    ) where
 
 import qualified Data.List as L
 

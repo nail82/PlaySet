@@ -3,4 +3,7 @@ module Main where
 import DeckOfSet
 
 main :: IO ()
-main = putStrLn $ show Uno
+main = do
+  case handHasASet hand of
+    Nothing -> putStrLn "No set"
+    Just s -> putStrLn $ show s
