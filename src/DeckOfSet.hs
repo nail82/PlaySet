@@ -44,12 +44,6 @@ mateCard (v1, c1, d1, p1) (v2, c2, d2, p2) = do
   return (v3, c3, d3, p3)
 
 
-deck :: [Card]
-deck = [ (v, c, d, p) |
-         v <- [Uno, Dos, Tres],
-         c <- [Green, Purple, Red],
-         d <- [Blank, Hash, Solid],
-         p <- [Angles, Pill, Worm]]
 
 hand :: [Card]
 hand = [deck !! 0, deck !! 1, deck !! 2
@@ -57,29 +51,17 @@ hand = [deck !! 0, deck !! 1, deck !! 2
        , deck !! 6, deck !! 7, deck !! 8
        , deck !! 9, deck !! 10, deck !! 11]
 
+-- Get all pairs in a hand.  A hand of 12 cards has 66 pairs.
 allPairs :: [Card] -> [(Card, Card)]
 allPairs cards =
     let cs = L.nub $ L.sort [swapCards (c1, c2) | c1 <- cards, c2 <- cards]
     in filter (\(c1, c2) -> c1 /= c2) cs
 
+-- Order a tuple of cards
 swapCards :: (Card, Card) -> (Card, Card)
 swapCards (c1, c2)
           | c2 < c1 = (c2, c1)
           | otherwise = (c1, c2)
-
-troublesomeHand :: [Card]
-troublesomeHand = [(Dos, Red, Blank, Pill), (Tres, Purple, Blank, Pill)
-                  , (Tres, Purple, Hash, Pill), (Dos, Green, Blank, Pill)
-                  , (Dos, Red, Blank, Worm), (Uno, Purple, Solid, Pill)
-                  , (Tres, Green, Solid, Worm), (Dos, Purple, Solid, Pill)
-                  , (Dos, Red, Solid, Pill), (Dos, Purple, Hash, Angles)
-                  , (Tres, Red, Blank, Worm), (Tres, Green, Hash, Worm)]
-
-mateInHand :: [Card] -> (Card, Card) -> Bool
-mateInHand h (c1, c2) =
-    case (mateCard c1 c2) of
-      Nothing -> False
-      Just c3 -> c3 `elem` h
 
 mateInHand' :: [Card] -> (Card, Card) -> Maybe (Card, Card, Card)
 mateInHand' h (c1, c2) =
@@ -95,3 +77,20 @@ handHasASet h =
     in case cs of
          [] -> Nothing
          (c:_) -> c
+
+
+-- Lists of cards
+troublesomeHand :: [Card]
+troublesomeHand = [(Dos, Red, Blank, Pill), (Tres, Purple, Blank, Pill)
+                  , (Tres, Purple, Hash, Pill), (Dos, Green, Blank, Pill)
+                  , (Dos, Red, Blank, Worm), (Uno, Purple, Solid, Pill)
+                  , (Tres, Green, Solid, Worm), (Dos, Purple, Solid, Pill)
+                  , (Dos, Red, Solid, Pill), (Dos, Purple, Hash, Angles)
+                  , (Tres, Red, Blank, Worm), (Tres, Green, Hash, Worm)]
+
+deck :: [Card]
+deck = [ (v, c, d, p) |
+         v <- [Uno, Dos, Tres],
+         c <- [Green, Purple, Red],
+         d <- [Blank, Hash, Solid],
+         p <- [Angles, Pill, Worm]]
