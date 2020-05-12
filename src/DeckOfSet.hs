@@ -1,4 +1,3 @@
-{-# LANGUAGE InstanceSigs #-}
 module DeckOfSet where
 
 import qualified Data.List as L
@@ -42,8 +41,6 @@ mateCard (v1, c1, d1, p1) (v2, c2, d2, p2) = do
   d3 <- mateFeature d1 d2
   p3 <- mateFeature p1 p2
   return (v3, c3, d3, p3)
-
-
 
 hand :: [Card]
 hand = [deck !! 0, deck !! 1, deck !! 2
