@@ -57,3 +57,11 @@ hand = [deck !! 0, deck !! 1, deck !! 2
 
 allPairs :: [Card] -> [(Card, Card)]
 allPairs cards = [(c1, c2) | c1 <- cards, c2 <- cards]
+
+troublesomeHand :: [Card]
+troublesomeHand = [(Dos, Red, Blank, Pill), (Tres, Purple, Blank, Pill)
+                  , (Tres, Purple, Hash, Pill), (Dos, Green, Blank, Pill)
+                  , (Dos, Red, Blank, Worm), (Uno, Purple, Solid, Pill)
+                  , (Tres, Green, Solid, Worm), (Dos, Purple, Solid, Pill)
+                  , (Dos, Red, Solid, Pill), (Dos, Purple, Hash, Angles)
+                  , (Tres, Red, Blank, Worm), (Tres, Green, Hash, Worm)]
