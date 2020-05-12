@@ -1,6 +1,8 @@
 {-# LANGUAGE InstanceSigs #-}
 module DeckOfSet where
 
+import qualified Data.List as L
+
 data Value = Uno
            | Dos
            | Tres
@@ -56,7 +58,14 @@ hand = [deck !! 0, deck !! 1, deck !! 2
        , deck !! 9, deck !! 10, deck !! 11]
 
 allPairs :: [Card] -> [(Card, Card)]
-allPairs cards = [(c1, c2) | c1 <- cards, c2 <- cards]
+allPairs cards =
+    let cs = L.nub $ L.sort [swapCards (c1, c2) | c1 <- cards, c2 <- cards]
+    in filter (\(c1, c2) -> c1 /= c2) cs
+
+swapCards :: (Card, Card) -> (Card, Card)
+swapCards (c1, c2)
+          | c2 < c1 = (c2, c1)
+          | otherwise = (c1, c2)
 
 troublesomeHand :: [Card]
 troublesomeHand = [(Dos, Red, Blank, Pill), (Tres, Purple, Blank, Pill)
@@ -65,3 +74,24 @@ troublesomeHand = [(Dos, Red, Blank, Pill), (Tres, Purple, Blank, Pill)
                   , (Tres, Green, Solid, Worm), (Dos, Purple, Solid, Pill)
                   , (Dos, Red, Solid, Pill), (Dos, Purple, Hash, Angles)
                   , (Tres, Red, Blank, Worm), (Tres, Green, Hash, Worm)]
+
+mateInHand :: [Card] -> (Card, Card) -> Bool
+mateInHand h (c1, c2) =
+    case (mateCard c1 c2) of
+      Nothing -> False
+      Just c3 -> c3 `elem` h
+
+mateInHand' :: [Card] -> (Card, Card) -> Maybe (Card, Card, Card)
+mateInHand' h (c1, c2) =
+    case (mateCard c1 c2) of
+      Nothing -> Nothing
+      Just c3 -> if c3 `elem` h then (Just (c1, c2, c3)) else Nothing
+
+handHasASet :: [Card] -> Maybe (Card, Card, Card)
+handHasASet h =
+    let pairs = allPairs h
+        mih = mateInHand' h
+        cs = fmap mih pairs
+    in case cs of
+         [] -> Nothing
+         (c:_) -> c
