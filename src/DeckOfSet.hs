@@ -5,8 +5,9 @@ module DeckOfSet
     , Shape (Angles, Pill, Worm)
     , mateInHand'
     , handHasASet
-    , hand
     , mateCard
+    , hand
+    , troublesomeHand
     ) where
 
 import qualified Data.List as L
