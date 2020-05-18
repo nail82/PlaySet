@@ -1,8 +1,11 @@
 module DeckOfSet
-    ( Value (Uno, Dos, Tres)
-    , Color (Green, Purple, Red)
-    , Shade (Blank, Hash, Solid)
-    , Shape (Angles, Pill, Worm)
+    ( Value (..)
+    , Color (..)
+    , Shade (..)
+    , Shape (..)
+    , Deck
+    , Hand
+    , deck
     , mateInHand'
     , handHasASet
     , mateCard
@@ -35,6 +38,8 @@ data Shape = Angles
              deriving (Eq, Ord, Enum, Show)
 
 type Card = (Value, Color, Shade, Shape)
+type Hand = [Card]
+type Deck = [Card]
 
 mateFeature :: (Enum a, Eq a) => a -> a -> Maybe a
 mateFeature v1 v2 =
@@ -57,7 +62,7 @@ mateCard m1@(v1, c1, d1, p1) m2@(v2, c2, d2, p2) =
       return (v3, c3, d3, p3)
 
 -- Get all pairs in a hand.  A hand of 12 cards has 66 pairs.
-allPairs :: [Card] -> [(Card, Card)]
+allPairs :: Hand -> [(Card, Card)]
 allPairs cards =
     let cs = L.nub $ L.sort [swapCards (c1, c2) | c1 <- cards, c2 <- cards]
     in filter (\(c1, c2) -> c1 /= c2) cs
@@ -69,14 +74,14 @@ swapCards (c1, c2)
           | otherwise = (c1, c2)
 
 -- Find a mate of two cards in a hand, if it exists.
-mateInHand' :: [Card] -> (Card, Card) -> Maybe (Card, Card, Card)
+mateInHand' :: Hand -> (Card, Card) -> Maybe (Card, Card, Card)
 mateInHand' h (c1, c2) =
     case (mateCard c1 c2) of
       Nothing -> Nothing
       Just c3 -> if c3 `elem` h then (Just (c1, c2, c3)) else Nothing
 
 -- If a hand has a Set, return the first one.
-handHasASet :: [Card] -> Maybe (Card, Card, Card)
+handHasASet :: Hand -> Maybe (Card, Card, Card)
 handHasASet h =
     let pairs = allPairs h
         mih = mateInHand' h
@@ -87,7 +92,7 @@ handHasASet h =
 
 
 -- A few lists of cards
-troublesomeHand :: [Card]
+troublesomeHand :: Hand
 troublesomeHand = [(Dos, Red, Blank, Pill), (Tres, Purple, Blank, Pill)
                   , (Tres, Purple, Hash, Pill), (Dos, Green, Blank, Pill)
                   , (Dos, Red, Blank, Worm), (Uno, Purple, Solid, Pill)
@@ -95,18 +100,18 @@ troublesomeHand = [(Dos, Red, Blank, Pill), (Tres, Purple, Blank, Pill)
                   , (Dos, Red, Solid, Pill), (Dos, Purple, Hash, Angles)
                   , (Tres, Red, Blank, Worm), (Tres, Green, Hash, Worm)]
 
-deck :: [Card]
+deck :: Deck
 deck = [ (v, c, d, p) |
          v <- [Uno, Dos, Tres],
          c <- [Green, Purple, Red],
          d <- [Blank, Hash, Solid],
          p <- [Angles, Pill, Worm]]
 
-hand :: [Card]
+hand :: Hand
 hand = [deck !! 0, deck !! 1, deck !! 2
        , deck !! 3, deck !! 4, deck !! 5
        , deck !! 6, deck !! 7, deck !! 8
        , deck !! 9, deck !! 10, deck !! 11]
 
-newHand :: [Card]
+newHand :: Hand
 newHand = (Tres,Purple,Solid,Worm) : troublesomeHand
