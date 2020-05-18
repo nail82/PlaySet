@@ -1,9 +1,9 @@
 module ArraySample where
 
-import Control.Monad
+import Control.Monad(forM)
 import System.Random
 import Data.List as L
-import DeckOfSet
+import DeckOfSet(Hand, deck)
 
 -- Sample one item from a list
 sampleList :: [a] -> IO a
