@@ -2,7 +2,6 @@ module Main where
 
 import Data.List as L
 import System.IO
-import DeckOfSet
 import ArraySample
 
 main :: IO ()
