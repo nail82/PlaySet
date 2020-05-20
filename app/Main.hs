@@ -1,18 +1,17 @@
 module Main where
 
+import Data.List as L
+import System.IO
 import DeckOfSet
 import ArraySample
 
-handIndicator :: Hand -> Int
-handIndicator h =
-    case handHasASet h of
-      Nothing -> 0
-      Just _ -> 1
-
 main :: IO ()
 main = do
-  let n = 1000
-  hands <- sampleOfHands 1000
-  let num = sum $ fmap handIndicator hands
-      ratio = (fromIntegral num) / n
-  putStrLn $ "Probability of a set in a 12 card hand = " <> show (ratio :: Double)
+  let tries = 500
+      fnm = "set_montecarlo.csv"
+  vals <- monteCarloSample tries
+  fh <- openFile fnm WriteMode
+  let csv = L.intercalate "\n" $ fmap show vals
+  hPutStr fh csv
+  hClose fh
+  putStrLn $ "Output in => " <> fnm

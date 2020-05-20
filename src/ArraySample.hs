@@ -3,7 +3,7 @@ module ArraySample where
 import Control.Monad(forM)
 import System.Random
 import Data.List as L
-import DeckOfSet(Hand, deck)
+import DeckOfSet(Hand, deck, handHasASet)
 
 -- Sample one item from a list
 sampleList :: [a] -> IO a
@@ -28,3 +28,22 @@ sampleOfHands n = do
   let xs = take n $ repeat 12
       sf = sampleNList deck
   forM xs sf
+
+
+handIndicator :: Hand -> Int
+handIndicator h =
+    case handHasASet h of
+      Nothing -> 0
+      Just _ -> 1
+
+computeRatio :: [Hand] -> Double
+computeRatio hands =
+    let num = sum $ fmap handIndicator hands
+        n = length hands
+    in (fromIntegral num) / (fromIntegral n)
+
+monteCarloSample :: Int -> IO [Double]
+monteCarloSample tries = do
+  let ns = take tries $ repeat 1000
+  mcSamples <- forM ns sampleOfHands
+  return $ computeRatio <$> mcSamples
