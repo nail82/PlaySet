@@ -1,4 +1,5 @@
-module DeckOfSet
+module DeckOfSet where
+{--
     ( Value (..)
     , Color (..)
     , Shade (..)
@@ -13,6 +14,7 @@ module DeckOfSet
     , newHand
     , troublesomeHand
     ) where
+--}
 
 import qualified Data.List as L
 
@@ -99,6 +101,14 @@ troublesomeHand = [(Dos, Red, Blank, Pill), (Tres, Purple, Blank, Pill)
                   , (Tres, Green, Solid, Worm), (Dos, Purple, Solid, Pill)
                   , (Dos, Red, Solid, Pill), (Dos, Purple, Hash, Angles)
                   , (Tres, Red, Blank, Worm), (Tres, Green, Hash, Worm)]
+
+trouble2 :: Hand
+trouble2 = [(Tres, Green, Hash, Worm), (Dos, Green, Blank, Angles)
+           , (Uno, Green, Hash, Worm), (Uno, Purple, Hash, Worm)
+           , (Uno, Green, Solid, Angles), (Tres, Red, Solid, Worm)
+           , (Dos, Red, Solid, Worm), (Dos, Purple, Blank, Angles)
+           , (Tres, Purple, Hash, Pill), (Dos, Red, Hash, Pill)
+           , (Tres, Red, Blank, Worm), (Dos, Purple, Solid, Angles)]
 
 deck :: Deck
 deck = [ (v, c, d, p) |
