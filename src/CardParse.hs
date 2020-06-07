@@ -1,5 +1,6 @@
 module CardParse where
 
+import qualified Data.List as L
 import Control.Applicative
 import Text.Trifecta
 import DeckOfSet
@@ -37,4 +38,10 @@ parseCard = do
   return (v,c,d,p)
 
 parseHand :: Parser Hand
-parseHand = undefined
+parseHand = do
+  h <- removeDups <$> sepBy parseCard (some space)
+  if length h >= 3 then return h
+  else fail "Need at least 3 unique cards"
+
+removeDups :: Hand -> Hand
+removeDups cards = L.nub $ L.sort cards
