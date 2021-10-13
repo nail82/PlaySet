@@ -37,6 +37,9 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - PlaySet
+    when:
+    - condition: false
+      other-modules: Paths_PlaySet
 
 tests:
   PlaySet-test:

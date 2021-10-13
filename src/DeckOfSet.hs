@@ -117,11 +117,5 @@ deck = [ (v, c, d, p) |
          d <- [Blank, Hash, Solid],
          p <- [Angles, Pill, Worm]]
 
-hand :: Hand
-hand = [deck !! 0, deck !! 1, deck !! 2
-       , deck !! 3, deck !! 4, deck !! 5
-       , deck !! 6, deck !! 7, deck !! 8
-       , deck !! 9, deck !! 10, deck !! 11]
-
 newHand :: Hand
 newHand = (Tres,Purple,Solid,Worm) : troublesomeHand
